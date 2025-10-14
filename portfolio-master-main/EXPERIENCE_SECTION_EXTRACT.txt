@@ -1,0 +1,426 @@
+EXPERIENCE SECTION EXTRACTION
+
+This file contains a full extraction of the `ExperienceSection` component and everything needed to reproduce the same section (design, behavior, data shape, dropdown/accordion, and certificate download) in another project.
+
+---
+
+1) Files and code (copy these into your project as-is or adapt paths):
+
+A) ExperienceSection component (src/components/sections/ExperienceSection.tsx)
+
+--- BEGIN ExperienceSection.tsx ---
+
+// src/components/sections/ExperienceSection.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Briefcase, CalendarDays, Target, MapPin, DownloadCloud } from "lucide-react";
+import type { ExperienceItem } from "@/types";
+import Link from "next/link";
+
+const experiences: ExperienceItem[] = [
+  {
+    id: "expTuffle",
+    role: "Intern – Python Developer",
+    company: "Tuffle Enterprises",
+    dates: "Jul 2023 – Sep 2023",
+    location: "Remote",
+    descriptionPoints: [
+        "Authored Python‑based game and application projects at Tuffle Enterprises, leveraging a variety of libraries and frameworks to deliver polished, end‑to‑end solutions with clear code structure and reliable functionality."
+    ],
+    tags: ["Python", "OOP", "Pygame", "Game Development"],
+    certificateLink: "/tuffle.pdf",
+  },
+  {
+    id: "expWatt",
+    role: "Intern – Web & AI Developer",
+    company: "WATT Incorporate",
+    dates: "Jul 2023 – Sep 2023",
+    location: "Remote",
+    descriptionPoints: [
+  "Collaborated on an AI‑based health‑tech project at WATT Incorporate, integrating HTML, CSS, and Python to build a user‑friendly assistant that streamlines health‑related functionalities through an intuitive web interface."
+    ],
+    tags: [ "Python", "Frontend", "Design", "AI-tools", "HTML-CSS"],
+    certificateLink: "/watt.pdf",
+  },
+];
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+export function ExperienceSection() {
+  return (
+    <section id="experience" className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 gradient-text">
+          Key Experiences
+        </h2>
+        
+        <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto space-y-6">
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={exp.id}
+              variants={itemVariants}
+              custom={index} 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <AccordionItem value={exp.id} className="bg-card/70 backdrop-blur-sm rounded-xl shadow-xl border border-border/50 hover:border-primary transition-colors duration-300 overflow-hidden">
+                <AccordionTrigger className="p-4 sm:p-6 text-left hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-t-xl group">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+                    <div className="flex-grow mb-2 sm:mb-0">
+                      <h3 className="text-lg sm:text-xl font-semibold text-primary group-hover:text-primary/90 transition-colors">
+                        {exp.role}
+                      </h3>
+                      <p className="text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors">
+                        {exp.companyLink ? (
+                          <a href={exp.companyLink} target="_blank" rel="noopener noreferrer" className="hover:underline focus:outline-none focus:ring-1 focus:ring-primary rounded px-0.5 py-px">
+                            {exp.company}
+                          </a>
+                        ) : (
+                          exp.company
+                        )}
+                      </p>
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground flex items-center shrink-0 mt-1 sm:mt-0 sm:mr-4">
+                      <CalendarDays className="h-3.5 w-3.5 mr-1.5 opacity-70" />
+                      {exp.dates}
+                    </p>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="p-4 sm:p-6 border-t border-border/30">
+                  {exp.location && (
+                    <p className="text-xs text-muted-foreground mb-3 flex items-center">
+                      <MapPin className="h-3.5 w-3.5 mr-1.5 opacity-70" /> {exp.location}
+                    </p>
+                  )}
+                  <ul className="space-y-2 list-disc list-inside text-foreground/80 text-sm sm:text-base">
+                    {exp.descriptionPoints.map((point, i) => (
+                      <li key={i} className="flex">
+                        <Target className="h-4 w-4 mr-2 mt-1 text-primary/70 shrink-0" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {exp.tags && exp.tags.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {exp.tags.map(tag => (
+                        <Badge key={tag} variant="secondary" className="bg-primary/10 text-primary border-primary/20 text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  {exp.certificateLink && (
+                    <div className="mt-5">
+                      <Button variant="outline" size="sm" asChild className="border-primary text-primary hover:bg-primary/10 hover:text-primary group">
+                        <Link href={exp.certificateLink} target="_blank" rel="noopener noreferrer">
+                          <DownloadCloud className="mr-2 h-4 w-4 group-hover:animate-pulse" />
+                          Download Certificate
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </motion.div>
+          ))}
+        </Accordion>
+         {experiences.length === 0 && (
+          <motion.p 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             className="text-center text-muted-foreground mt-8 text-lg"
+           >
+             More experiences coming soon!
+           </motion.p>
+        )}
+      </motion.div>
+    </section>
+  );
+}
+
+--- END ExperienceSection.tsx ---
+
+
+B) ExperienceItem type (src/types/index.ts)
+
+--- BEGIN types/index.ts ---
+
+export interface ExperienceItem {
+  id: string;
+  role: string;
+  company: string;
+  companyLink?: string;
+  dates: string;
+  location?: string;
+  descriptionPoints: string[];
+  tags?: string[];
+  certificateLink?: string;
+}
+
+--- END types/index.ts ---
+
+
+C) Accordion component (src/components/ui/accordion.tsx)
+
+--- BEGIN accordion.tsx ---
+
+"use client"
+
+import * as React from "react"
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import { ChevronDown } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Accordion = AccordionPrimitive.Root
+
+const AccordionItem = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
+>(({ className, ...props }, ref) => (
+  <AccordionPrimitive.Item
+    ref={ref}
+    className={cn("border-b", className)}
+    {...props}
+  />
+))
+AccordionItem.displayName = "AccordionItem"
+
+const AccordionTrigger = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+    </AccordionPrimitive.Trigger>
+  </AccordionPrimitive.Header>
+))
+AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
+
+const AccordionContent = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <AccordionPrimitive.Content
+    ref={ref}
+    className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    {...props}
+  >
+    <div className={cn("pb-4 pt-0", className)}>{children}</div>
+  </AccordionPrimitive.Content>
+))
+
+AccordionContent.displayName = AccordionPrimitive.Content.displayName
+
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+
+--- END accordion.tsx ---
+
+
+D) Button component (src/components/ui/button.tsx)
+
+--- BEGIN button.tsx ---
+
+[See full code copy included in repository file: src/components/ui/button.tsx]
+
+Button API summary:
+- Props: standard button props + variant (default|destructive|outline|secondary|ghost|link) + size (default|sm|lg|icon) + asChild (boolean to render using Radix Slot)
+- Uses: class-variance-authority (cva) for variants.
+
+--- END button.tsx ---
+
+
+E) Badge component (src/components/ui/badge.tsx)
+
+--- BEGIN badge.tsx ---
+
+[See full code copy included in repository file: src/components/ui/badge.tsx]
+
+Badge API summary:
+- Props: standard div props + variant (default|secondary|destructive|outline)
+
+--- END badge.tsx ---
+
+
+F) Utility: cn helper (src/lib/utils.ts)
+
+--- BEGIN utils.ts ---
+
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+--- END utils.ts ---
+
+
+2) Data shape and recommended replacements
+
+- ExperienceItem (interface above) is the data contract. Replace `experiences` array with your own objects.
+- Each entry should have an `id` (unique string), `role` (title), `company`, `dates`, optional `companyLink` (http(s) URL), optional `location`, `descriptionPoints` (string array), optional `tags` (string array), optional `certificateLink` (path to file in `public/` or external URL).
+
+Example:
+{
+  id: "expYourCompany",
+  role: "Senior Developer",
+  company: "Your Company",
+  companyLink: "https://your-company.example",
+  dates: "Jan 2022 – Present",
+  location: "New York, NY",
+  descriptionPoints: [
+    "Led a team of 5 engineers to ship a realtime messaging product.",
+    "Improved performance by 3x through profiling and optimization."
+  ],
+  tags: ["TypeScript", "React", "Performance"],
+  certificateLink: "/certs/your-cert.pdf",
+}
+
+3) Visual design and classes used (Tailwind + custom tokens)
+
+Important class groups used by the section (copy or adapt into your tailwind config):
+
+- Container and layout:
+  - `container mx-auto px-4 sm:px-6 lg:px-8` (section wrapper)
+  - `w-full max-w-3xl mx-auto space-y-6` (accordion container)
+  - `bg-card/70 backdrop-blur-sm rounded-xl shadow-xl border border-border/50 hover:border-primary` (accordion item)
+- Headings and text:
+  - `text-4xl md:text-5xl font-bold text-center` (section title)
+  - `text-lg sm:text-xl font-semibold text-primary` (role heading)
+  - `text-sm text-muted-foreground` (company/dates)
+- Accordion trigger/content:
+  - `p-4 sm:p-6 text-left` (trigger)
+  - `p-4 sm:p-6 border-t border-border/30` (content)
+- Lists and icons:
+  - `list-disc list-inside` (description list)
+  - Icon sizes: `h-3.5 w-3.5`, `h-4 w-4`
+- Buttons/Badges:
+  - Button uses `buttonVariants` from `ui/button.tsx` (variants: outline used here)
+  - Badge uses `badgeVariants` (variant: secondary used here)
+
+Note: Tailwind theme tokens like `bg-card`, `border-border`, `text-primary`, `text-muted-foreground`, `ring-ring`, `bg-primary`, etc., are used. These tokens are likely defined in the project's Tailwind and shadcn UI/theme config. If you port this to another project, either map these tokens to your tokens or copy the project's tailwind config and theme color definitions.
+
+4) Interactive behavior and accessibility
+
+- Accordion is implemented with Radix UI `@radix-ui/react-accordion`. It supports single-item open via `type="single"` and `collapsible` for closing.
+- The `AccordionTrigger` adds an animated chevron (svg rotates when open) and keyboard focus styles.
+- The section and items use Framer Motion `motion.div` for reveal/enter animations. These are optional — you can remove motion wrappers if you don't want framer-motion.
+- Certificate download uses a `Button` with `asChild` + `next/link` so the anchor behaves as a link. `target="_blank" rel="noopener noreferrer"` are provided for external or file links.
+
+5) Assets
+
+- This repo includes `public/tuffle.pdf` and `public/watt.pdf`. The `certificateLink` in the sample points to these paths. If you copy certificates into your project, put them under `public/` and set `certificateLink: "/your-cert.pdf"` (root-relative).
+- Current public files referencing this feature found:
+  - /tuffle.pdf
+  - /watt.pdf
+
+6) Dependency checklist
+
+To reproduce behavior exactly, ensure your project has these dependencies installed (versions can vary but these packages are required):
+- framer-motion
+- lucide-react
+- @radix-ui/react-accordion
+- class-variance-authority (cva)
+- clsx
+- tailwind-merge
+- tailwindcss (and configured theme tokens)
+- @radix-ui/react-slot (for Button asChild Slot)
+- next (if using Next.js Link). If not using Next, replace `next/link` usage with an anchor `<a>` or your router's Link.
+
+7) Integration steps (copy + modify)
+
+1. Copy `src/components/sections/ExperienceSection.tsx` into your project (adjust imports to match your aliasing: `@/components/...` may need to be changed).
+2. Copy `src/types/index.ts` (or at least the `ExperienceItem` interface) into your types file and import it in the section.
+3. Copy supporting UI components used by the section (or replace them):
+   - `src/components/ui/accordion.tsx`
+   - `src/components/ui/button.tsx`
+   - `src/components/ui/badge.tsx`
+   - `src/lib/utils.ts` (cn helper)
+4. Add certificate files to `public/` and update `certificateLink` paths in the `experiences` array.
+5. Ensure Tailwind theme tokens are available or replace them with standard classes (e.g., replace `bg-card` with `bg-white/80` or similar).
+6. Install npm packages listed in the checklist above.
+7. Import and render `<ExperienceSection />` where appropriate.
+
+8) Accessibility & edge cases
+
+- Edge case: If `experiences` is empty, a fallback message "More experiences coming soon!" is shown. You can change this by editing the JSX around the conditional.
+- If `companyLink` is provided, the company name becomes an external link. Ensure the link has valid http(s).
+- For large `descriptionPoints` arrays, list spacing is controlled by `space-y-2`. If very long, consider limiting height or enabling internal scroll, or splitting points.
+
+9) Minimal example to replace data
+
+Replace the `experiences` variable with your array. Keep ids unique. Example snippet:
+
+const experiences: ExperienceItem[] = [
+  {
+    id: "expMyCo",
+    role: "Senior Engineer",
+    company: "My Co",
+    companyLink: "https://myco.example",
+    dates: "Jan 2020 – Present",
+    location: "Remote",
+    descriptionPoints: ["Built X feature", "Led team of 4"],
+    tags: ["React", "TypeScript"],
+    certificateLink: "/certs/myco-cert.pdf",
+  },
+]
+
+10) Where to change styles or remove animation
+
+- Remove Framer Motion: Delete or replace `motion.div` wrappers and the `variants` constants.
+- Use different accordion behavior: change props on `Accordion` (e.g., `type="multiple"` for multiple-open).
+- Change button visuals via `ui/button.tsx` variants or className overrides.
+
+11) Final notes
+
+- The code uses Next.js `next/link` to wrap the certificate anchor. If you're not using Next, replace with `<a href="/path-to-cert.pdf" target="_blank" rel="noopener noreferrer">`.
+- The project uses Tailwind tokens and shadcn-like UI patterns — if your project doesn't, adapt class names accordingly.
+
+---
+
+Assets found in this repo (relevant to ExperienceSection):
+- public/tuffle.pdf (exists)
+- public/watt.pdf (exists)
+
+---
+
+If you'd like, I can also:
+- Convert the section to a plain React component (no Next.js Link) and inline minimal CSS for use in any app.
+- Produce a short patch that extracts and centralizes the `experiences` data into a JSON file and demonstrates importing it.
+- Add unit tests for the component (rendering, anchor href checks).
+
+End of extraction.

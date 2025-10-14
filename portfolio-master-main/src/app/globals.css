@@ -1,0 +1,189 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Dark & Light Tones (Classy Space Theme) */
+    --color-deep-charcoal-hsl: 240 6% 10%;    /* #17171A - Dark mode backgrounds */
+    --color-card-dark-hsl: 240 5% 15%;        /* #242529 - Cards in dark mode */
+    --color-pure-white-hsl: 0 0% 100%;        /* #FFFFFF - Light mode backgrounds, bright text */
+    --color-off-white-hsl: 210 20% 96%;       /* #F2F5F7 - Main text on dark backgrounds */
+    --color-dark-text-light-mode-hsl: 240 6% 20%; /* #2E2E33 - Main text on light backgrounds */
+    --color-void-black-hsl: 240 10% 4%;      /* #0A0A0B - For very dark gradient end */
+
+    /* Silver Accents & Greys (Classy Space Theme) */
+    --color-bright-silver-hsl: 210 15% 85%;   /* #D2D8DD - Primary accent, "shines", buttons */
+    --color-medium-grey-hsl: 210 10% 40%;     /* #5E6673 - Borders, secondary text */
+    --color-dark-grey-hsl: 210 10% 25%;       /* #3A404A - Darker borders, input backgrounds */
+
+    /* Light Mode Greys (Classy Space Theme) */
+    --color-light-grey-panel-hsl: 210 15% 94%;/* #EAEFF4 - Muted panels/cards in light mode */
+    --color-light-grey-border-hsl: 210 10% 88%;/* #DCE0E3 - Borders in light mode */
+
+    /* Subtle Alert (Classy Space Theme) */
+    --color-alert-red-subtle-hsl: 0 60% 60%;  /* #E56666 */
+    --color-alert-red-subtle-darker-hsl: 0 50% 50%; /* Darker red for light mode */
+
+
+    /* Default to Dark Mode Variables */
+    --background: var(--color-deep-charcoal-hsl);
+    --foreground: var(--color-off-white-hsl);
+
+    --card: var(--color-card-dark-hsl);
+    --card-foreground: var(--color-off-white-hsl);
+
+    --popover: var(--color-card-dark-hsl);
+    --popover-foreground: var(--color-off-white-hsl);
+
+    --primary: var(--color-bright-silver-hsl);
+    --primary-foreground: var(--color-deep-charcoal-hsl);
+
+    --secondary: var(--color-medium-grey-hsl);
+    --secondary-foreground: var(--color-off-white-hsl);
+
+    --muted: var(--color-dark-grey-hsl);
+    --muted-foreground: var(--color-medium-grey-hsl);
+
+    --accent: var(--color-bright-silver-hsl);
+    --accent-foreground: var(--color-deep-charcoal-hsl);
+
+    --destructive: var(--color-alert-red-subtle-hsl);
+    --destructive-foreground: var(--color-pure-white-hsl);
+
+    --border: var(--color-medium-grey-hsl);
+    --input: var(--color-dark-grey-hsl);
+    --ring: var(--color-bright-silver-hsl);
+
+    --radius: 0.75rem;
+
+    /* Sidebar specific vars (Dark Mode) */
+    --sidebar: var(--color-deep-charcoal-hsl);
+    --sidebar-foreground: var(--color-off-white-hsl);
+    --sidebar-border: var(--color-medium-grey-hsl);
+    --sidebar-accent: var(--color-card-dark-hsl);
+    --sidebar-accent-foreground: var(--color-bright-silver-hsl);
+    --sidebar-ring: var(--color-bright-silver-hsl);
+
+    /* Chart specific vars (Dark Mode) */
+    --chart-1: var(--color-bright-silver-hsl);
+    --chart-2: var(--color-medium-grey-hsl);
+    --chart-3: var(--color-off-white-hsl);
+    --chart-4: var(--color-dark-grey-hsl);
+    --chart-5: var(--color-pure-white-hsl);
+
+    /* Gradient Vars - Dark Mode (Hero Section - Deep Space Shimmer) */
+    --gradient-start: var(--color-deep-charcoal-hsl); /* #17171A */
+    --gradient-end: var(--color-void-black-hsl); /* #0A0A0B */
+  }
+
+  .light {
+    --background: var(--color-pure-white-hsl);
+    --foreground: var(--color-dark-text-light-mode-hsl);
+
+    --card: var(--color-light-grey-panel-hsl);
+    --card-foreground: var(--color-dark-text-light-mode-hsl);
+
+    --popover: var(--color-pure-white-hsl);
+    --popover-foreground: var(--color-dark-text-light-mode-hsl);
+
+    --primary: var(--color-dark-grey-hsl); /* Darker accent for light mode */
+    --primary-foreground: var(--color-pure-white-hsl);
+
+    --secondary: var(--color-light-grey-border-hsl);
+    --secondary-foreground: var(--color-dark-text-light-mode-hsl);
+
+    --muted: var(--color-light-grey-panel-hsl);
+    --muted-foreground: var(--color-medium-grey-hsl);
+
+    --accent: var(--color-dark-grey-hsl);
+    --accent-foreground: var(--color-pure-white-hsl);
+
+    --destructive: var(--color-alert-red-subtle-darker-hsl);
+    --destructive-foreground: var(--color-pure-white-hsl);
+
+    --border: var(--color-light-grey-border-hsl);
+    --input: var(--color-pure-white-hsl); /* White input fields on light mode */
+    --ring: var(--color-dark-grey-hsl);
+
+    /* Sidebar specific vars (Light Mode) */
+    --sidebar: var(--color-pure-white-hsl);
+    --sidebar-foreground: var(--color-dark-text-light-mode-hsl);
+    --sidebar-border: var(--color-light-grey-border-hsl);
+    --sidebar-accent: var(--color-light-grey-panel-hsl);
+    --sidebar-accent-foreground: var(--color-dark-grey-hsl);
+    --sidebar-ring: var(--color-dark-grey-hsl);
+
+    /* Chart specific vars (Light Mode) */
+    --chart-1: var(--color-dark-grey-hsl);
+    --chart-2: var(--color-medium-grey-hsl);
+    --chart-3: var(--color-bright-silver-hsl); /* Lighter silver for contrast */
+    --chart-4: var(--color-dark-text-light-mode-hsl);
+    --chart-5: var(--color-deep-charcoal-hsl);
+
+    /* Gradient Vars - Light Mode */
+    --gradient-start: var(--color-light-grey-panel-hsl);
+    --gradient-end: var(--color-pure-white-hsl);
+  }
+
+  *, ::before, ::after {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    @apply bg-background text-foreground scroll-smooth;
+    font-family: var(--font-inter), sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins), sans-serif;
+    @apply font-semibold tracking-tight;
+  }
+  section {
+    @apply py-16 md:py-24;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; /* Added for horizontal scrollbar if needed */
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background) / 0.5);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.7);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
+  }
+
+  .neon-text {
+    text-shadow:
+      0 0 5px   hsl(var(--color-pure-white-hsl) / 0.8),
+      0 0 10px  hsl(var(--color-pure-white-hsl) / 0.6),
+      0 0 15px  hsl(var(--color-bright-silver-hsl) / 0.4),
+      0 0 20px  hsl(var(--color-bright-silver-hsl) / 0.3);
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+  }
+  .dark .gradient-text {
+     background-image: linear-gradient(to right, hsl(var(--color-bright-silver-hsl)), hsl(var(--color-pure-white-hsl)));
+  }
+  .light .gradient-text {
+    background-image: linear-gradient(to right, hsl(var(--color-dark-grey-hsl)), hsl(var(--color-medium-grey-hsl)));
+  }
+
+  input,
+  textarea {
+    transition: border-color .2s ease-out, box-shadow .2s ease-out;
+  }
+}
+
+@layer components {
+  .transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+}
