@@ -3,6 +3,11 @@
 
 import { z } from "zod";
 import { Resend } from "resend";
+import {
+  suggestProject,
+  type SuggestProjectInput,
+  type SuggestProjectOutput,
+} from "@/ai/flows/project-suggestion";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -64,5 +69,18 @@ export async function submitContactForm(
       message: "An error occurred while submitting the form. Please try again later.",
       success: false,
     };
+  }
+}
+
+// AI: Suggest a relevant project based on user interest and available titles
+export async function getAiProjectSuggestion(
+  input: SuggestProjectInput
+): Promise<SuggestProjectOutput | { error: string }> {
+  try {
+    const result = await suggestProject(input);
+    return result;
+  } catch (err) {
+    console.error("Error generating AI project suggestion:", err);
+    return { error: "Failed to generate a project suggestion. Please try again." };
   }
 }

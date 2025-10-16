@@ -81,6 +81,9 @@ const USER_PROJECTS: Project[] = [
 
 const filterCategories = ["All", "Web", "Full-Stack", "Mobile"];
 
+// Export just the titles for reuse (e.g., AI suggestion prompt)
+export const projectTitles = USER_PROJECTS.map((p) => p.title);
+
 export function ProjectsSection() {
   const [activeFilter, setActiveFilter] = useState("All");
 
